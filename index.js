@@ -37,12 +37,6 @@ const search = opt => {
     }&page=${opt.page || 1}`;
 
 
-/*  /${opt.page || 1}/`
-    opt.category ? 'category-' : ''
-  }${opt.orderBy}/${opt.sortBy}/${opt.page || 1}/`;*/
-
-
-console.log('reqUrl', reqUrl);
   return got(reqUrl).then(data => {
     let $ = cheerio.load(data.body);
 
@@ -128,24 +122,10 @@ const info = url => {
     info.category = $stats_categorie('a.btn.tags').eq(1)
       .text()
       .trim();
-/*
-    info.language = $info_left('li')
-      .eq(2)
-      .children('span')
-      .text()
-      .trim();
-*/
     info.size = $stats_categorie('.stats-taille')
       .children('span')
       .text()
       .trim();
-/*
-    info.uploaded = $info_left('li')
-      .eq(4)
-      .children('span')
-      .text()
-      .trim();
-*/
     info.downloads = $stats_infos('.telecharges')
       .children('span')
       .eq(1)
@@ -175,7 +155,6 @@ const info = url => {
       .slice(10)
       .replace(/,/g, '')
       .trim();
-
     info.infohash = $content('#hash-du-torrent > p > strong')
       .text()
       .trim();
@@ -186,7 +165,6 @@ const info = url => {
 
     imdb_link = $content("#photos div a[href^='https://www.imdb.com']").attr('href');
     imdb_link ? info.imdb_id = imdb_link.match(/\/(tt\d+)\//)[1] : '';
-    //info.imdb_id = !imdb_link ? null : imdb_link.match(/\/(tt\d+)\//)[1];
 
     trackers = [];
     $trackers = cheerio.load(
